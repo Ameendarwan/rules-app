@@ -1,0 +1,39 @@
+{
+  "presets": ["@babel/preset-env", ["@babel/preset-react", { "runtime": "automatic" }], "@babel/preset-typescript"],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    [
+      "babel-plugin-styled-components",
+      {
+        "ssr": false,
+        "displayName": true,
+        "meaninglessFileNames": ["index", "styles"],
+        "pure": true,
+        "namespace": "react-template"
+      }
+    ],
+    [
+      "babel-plugin-module-resolver",
+      {
+        "root": ["./src"],
+        "alias": {
+          "@app": "./src/app",
+          "@test": "./test"
+        }
+      }
+    ]
+  ],
+  "env": {
+    "dev": {
+      "plugins": [
+        [
+          "babel-plugin-styled-components",
+          {
+            "minify": false,
+            "transpileTemplateLiterals": false
+          }
+        ]
+      ]
+    }
+  }
+}

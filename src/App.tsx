@@ -1,0 +1,29 @@
+import './globals.css';
+import './fonts.css';
+
+import { BrowserRouter } from 'react-router-dom';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from './pages/ErrorFallback';
+import { FC } from 'react';
+import Routes from './routes';
+import { Toaster } from 'sonner';
+
+const App: FC = () => {
+  return (
+    <BrowserRouter>
+      <Toaster
+        richColors
+        position="bottom-right"
+        toastOptions={{
+          duration: 5000,
+          className: 'data-sonner-toast',
+        }}
+      />
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Routes />
+      </ErrorBoundary>
+    </BrowserRouter>
+  );
+};
+
+export default App;

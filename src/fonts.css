@@ -1,0 +1,38 @@
+/*weights from https://bigelowandholmes.typepad.com/bigelow-holmes/2015/07/on-font-weight.html and
+https://gist.github.com/lukaszgrolik/5849599
+*/
+
+/* Mont Regular */
+@font-face {
+  font-family: "Mont";
+  src: url("/fonts/Mont-Regular.ttf") format("truetype");
+  font-weight: 600; /* regular */
+  font-style: normal;
+}
+
+
+/* Mont Bold */
+@font-face {
+  font-family: "Mont";
+  src: url("/fonts/Mont-Bold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+
+/* Mont Black */
+@font-face {
+  font-family: "Mont";
+  src: url("/fonts/Mont-Black.ttf") format("truetype");
+  font-weight: 950;
+  font-style: normal;
+}
+
+/* Mont SemiBold */
+@font-face {
+  font-family: "Mont";
+  src: url("/fonts/Mont-SemiBold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
