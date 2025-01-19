@@ -17,24 +17,24 @@ import {
   TableHeader,
   TableRow,
 } from '@app/components/Table/Table';
+import { handleRuleFieldChange, handleRuleNameChange } from '@app/store/slices/rules';
 
 import { Button } from '@app/components/Button/Button';
 import ConfirmationDialog from '@app/components/ConfirmationDialog';
 import { Icon } from '@iconify/react';
 import { Input } from '@app/components/Input/Input';
 import SortableItem from './components/SortableItem';
+import { useDispatch } from 'react-redux';
 import { useDragAndDrop } from './hooks/useDragAndDrop';
-import { useRuleFieldChange } from './hooks/useRuleFieldChange';
 import { useRulesetManagement } from './hooks/useRulesetManagement';
 
 const Rules = () => {
+  const dispatch = useDispatch();
   const {
     ruleset,
     selectedRuleset,
     isEditMode,
     editingRuleId,
-    setRuleset,
-    setSelectedRuleset,
     handleSelectRuleset,
     handleCopyRuleset,
     handleResetSelectedRuleset,
@@ -48,9 +48,7 @@ const Rules = () => {
     handleCancel,
   } = useRulesetManagement();
 
-  const { handleRuleFieldChange, handleRuleNameChange } = useRuleFieldChange(selectedRuleset, setSelectedRuleset);
-
-  const { sensors, handleDragEnd } = useDragAndDrop(selectedRuleset, setRuleset, setSelectedRuleset);
+  const { sensors, handleDragEnd } = useDragAndDrop();
 
   return (
     <div className="flex h-full w-full flex-col sm:p-4 lg:p-10">
@@ -87,7 +85,7 @@ const Rules = () => {
         {isEditMode && (
           <div className="flex w-full flex-row flex-wrap items-center justify-between gap-3 md:gap-6">
             <Input
-              onChange={handleRuleNameChange}
+              onChange={ev => dispatch(handleRuleNameChange(ev.target.value))}
               value={selectedRuleset?.name}
               className="h-8 w-full text-xs md:w-1/3"
             />
@@ -150,7 +148,11 @@ const Rules = () => {
                         className="h-8"
                         value={rule.measurement}
                         onPointerDown={e => e.stopPropagation()}
-                        onChange={e => handleRuleFieldChange(rule.id, 'measurement', e.target.value)}
+                        onChange={e =>
+                          dispatch(
+                            handleRuleFieldChange({ ruleId: rule.id, field: 'measurement', value: e.target.value })
+                          )
+                        }
                       />
                     ) : (
                       rule.measurement
@@ -160,7 +162,9 @@ const Rules = () => {
                     {editingRuleId === rule.id ? (
                       <Select
                         value={rule.comparator}
-                        onValueChange={value => handleRuleFieldChange(rule.id, 'comparator', value)}>
+                        onValueChange={value =>
+                          dispatch(handleRuleFieldChange({ ruleId: rule.id, field: 'comparator', value }))
+                        }>
                         <SelectTrigger className="h-8 w-full text-xs md:w-1/3">
                           <SelectValue placeholder="Select comparator" />
                         </SelectTrigger>
@@ -188,11 +192,17 @@ const Rules = () => {
                           className="h-8"
                           value={rule.comparedValue}
                           onPointerDown={e => e.stopPropagation()}
-                          onChange={e => handleRuleFieldChange(rule.id, 'comparedValue', e.target.value)}
+                          onChange={e =>
+                            dispatch(
+                              handleRuleFieldChange({ ruleId: rule.id, field: 'comparedValue', value: e.target.value })
+                            )
+                          }
                         />
                         <Select
                           value={rule.unitName}
-                          onValueChange={value => handleRuleFieldChange(rule.id, 'unitName', value)}>
+                          onValueChange={value =>
+                            dispatch(handleRuleFieldChange({ ruleId: rule.id, field: 'unitName', value }))
+                          }>
                           <SelectTrigger className="h-8 w-[100px]">
                             <SelectValue placeholder="Unit" />
                           </SelectTrigger>
@@ -219,7 +229,11 @@ const Rules = () => {
                         className="h-8"
                         value={rule.findingName}
                         onPointerDown={e => e.stopPropagation()}
-                        onChange={e => handleRuleFieldChange(rule.id, 'findingName', e.target.value)}
+                        onChange={e =>
+                          dispatch(
+                            handleRuleFieldChange({ ruleId: rule.id, field: 'findingName', value: e.target.value })
+                          )
+                        }
                       />
                     ) : (
                       rule.findingName
@@ -229,7 +243,9 @@ const Rules = () => {
                     {editingRuleId === rule.id ? (
                       <Select
                         value={rule.action}
-                        onValueChange={value => handleRuleFieldChange(rule.id, 'action', value)}>
+                        onValueChange={value =>
+                          dispatch(handleRuleFieldChange({ ruleId: rule.id, field: 'action', value }))
+                        }>
                         <SelectTrigger className="h-8 w-[100px] text-xs">
                           <SelectValue placeholder="Select Action" />
                         </SelectTrigger>

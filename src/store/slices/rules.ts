@@ -113,7 +113,7 @@ const rulesSlice = createSlice({
     setEditingRuleId(state, action: PayloadAction<number | null>) {
       state.editingRuleId = action.payload;
     },
-    handleDragEnd(state, action: PayloadAction<{ activeId: number; overId: number }>) {
+    handleDrag(state, action: PayloadAction<{ activeId: number; overId: number }>) {
       const { activeId, overId } = action.payload;
       if (!state.selectedRuleset || activeId === overId) return;
 
@@ -128,6 +128,37 @@ const rulesSlice = createSlice({
         const updatedRuleset = { ...state.selectedRuleset, rules: updatedRules };
         state.ruleset = state.ruleset.map(set => (set.id === state.selectedRuleset!.id ? updatedRuleset : set));
         state.selectedRuleset = updatedRuleset;
+      }
+    },
+    handleRuleNameChange(state, action: PayloadAction<string>) {
+      if (state.selectedRuleset) {
+        state.selectedRuleset.name = action.payload;
+      }
+    },
+    handleRuleFieldChange(
+      state,
+      action: PayloadAction<{ ruleId: number; field: keyof RuleSet['rules'][0]; value: string }>
+    ) {
+      const { ruleId, field, value } = action.payload;
+      if (state.selectedRuleset) {
+        const updatedRules = state.selectedRuleset.rules.map(rule =>
+          rule.id === ruleId ? { ...rule, [field]: value } : rule
+        );
+        state.selectedRuleset.rules = updatedRules;
+        state.ruleset = state.ruleset.map(r =>
+          !!state.selectedRuleset && r.id === state.selectedRuleset!.id
+            ? { ...state.selectedRuleset, rules: updatedRules }
+            : r
+        );
+      }
+    },
+    saveRowChanges(state) {
+      state.isEditMode = false;
+      if (state.selectedRuleset) {
+        const updatedRuleset = { ...state.selectedRuleset };
+        state.ruleset = state.ruleset.map(r => (r.id === state?.selectedRuleset?.id ? updatedRuleset : r));
+        state.selectedRuleset = updatedRuleset;
+        state.editingRuleId = null;
       }
     },
   },
@@ -146,6 +177,10 @@ export const {
   cancelEdit,
   toggleEditMode,
   setEditingRuleId,
+  handleRuleFieldChange,
+  handleRuleNameChange,
+  handleDrag,
+  saveRowChanges,
 } = rulesSlice.actions;
 
 export const getRuleset = (state: RootState) => state.rules.ruleset;
