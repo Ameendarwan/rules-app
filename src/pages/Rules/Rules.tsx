@@ -25,6 +25,7 @@ import ConfirmationDialog from '@app/components/ConfirmationDialog';
 import { Icon } from '@iconify/react';
 import { Input } from '@app/components/Input/Input';
 import SortableItem from './components/SortableItem';
+import { Toaster } from '@app/components/Toaster/Toaster';
 import { useDispatch } from 'react-redux';
 import { useDragAndDrop } from './hooks/useDragAndDrop';
 import { useRulesetManagement } from './hooks/useRulesetManagement';
@@ -53,11 +54,12 @@ const Rules = () => {
 
   return (
     <div className="flex h-full w-full flex-col sm:p-4 lg:p-10">
+      <Toaster />
       <div className="flex w-full flex-row flex-wrap items-center justify-between gap-4 py-4 max-sm:flex-col max-sm:px-4">
         {!isEditMode && (
           <div className="flex w-full flex-row flex-wrap items-center justify-between gap-2 md:gap-6">
             <Select value={`${selectedRuleset?.id}`} onValueChange={value => handleSelectRuleset(value)}>
-              <SelectTrigger className="h-8 w-full text-xs md:w-1/3">
+              <SelectTrigger className="h-8 w-full md:w-1/3">
                 <SelectValue placeholder="Select Ruleset" />
               </SelectTrigger>
               <SelectContent>
@@ -122,12 +124,12 @@ const Rules = () => {
         <TableHeader className="uppercase">
           <TableRow>
             <TableHead className="w-[100px]"></TableHead>
-            <TableHead className="w-[100px]">Rule #</TableHead>
-            <TableHead colSpan={3} className="text-center">
+            <TableHead className="w-[100px] font-bold">Rule #</TableHead>
+            <TableHead colSpan={3} className="text-center font-bold">
               Measurement Condition
             </TableHead>
-            <TableHead>Finding Item</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead className="font-bold">Finding Item</TableHead>
+            <TableHead className="font-bold">Action</TableHead>
             <TableHead></TableHead>
           </TableRow>
         </TableHeader>
@@ -247,7 +249,7 @@ const Rules = () => {
                         onValueChange={value =>
                           dispatch(handleRuleFieldChange({ ruleId: rule.id, field: 'action', value }))
                         }>
-                        <SelectTrigger className="h-8 w-[100px] text-xs">
+                        <SelectTrigger className="h-8 w-[150px]">
                           <SelectValue placeholder="Select Action" />
                         </SelectTrigger>
                         <SelectContent>

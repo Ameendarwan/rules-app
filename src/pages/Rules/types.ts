@@ -6,7 +6,6 @@ export interface Rule {
   measurement: string;
   comparedValue: number | string;
   action: string;
-  isNew?: boolean;
 }
 
 export interface RuleSet {

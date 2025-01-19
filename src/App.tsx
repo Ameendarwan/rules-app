@@ -13,15 +13,15 @@ import { store } from './store';
 const App: FC = () => {
   return (
     <Provider store={store}>
+      <Toaster
+        richColors
+        position="bottom-right"
+        toastOptions={{
+          duration: 5000,
+          className: 'data-sonner-toast',
+        }}
+      />
       <BrowserRouter>
-        <Toaster
-          richColors
-          position="bottom-right"
-          toastOptions={{
-            duration: 5000,
-            className: 'data-sonner-toast',
-          }}
-        />
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Routes />
         </ErrorBoundary>

@@ -5,6 +5,10 @@ import { RuleSet } from '@app/pages/Rules/types';
 import cloneDeep from 'lodash/cloneDeep';
 import { mockRuleset } from '@app/mock/data';
 
+const generateRandomId = () => {
+  return Math.floor(1000 + Math.random() * 9000);
+};
+
 interface RulesState {
   ruleset: RuleSet[];
   selectedRuleset: RuleSet | null;
@@ -25,7 +29,7 @@ const rulesSlice = createSlice({
   reducers: {
     addNewRuleset(state) {
       const newRuleset = {
-        id: Date.now(),
+        id: generateRandomId(),
         name: 'New Ruleset',
         rules: [],
       };
@@ -45,7 +49,7 @@ const rulesSlice = createSlice({
 
       state.ruleset.push({
         ...state.selectedRuleset,
-        id: Date.now(),
+        id: generateRandomId(),
         name: `${state.selectedRuleset.name}_(${findCopies.length})`,
       });
     },
@@ -59,13 +63,13 @@ const rulesSlice = createSlice({
       if (!state.selectedRuleset) return;
 
       const newRule = {
-        id: Date.now(),
-        measurement: '',
+        id: generateRandomId(),
+        measurement: 'N/A',
         comparator: '<',
-        comparedValue: '',
-        findingName: '',
-        action: '',
-        isNew: true,
+        comparedValue: 1,
+        unitName: 'ms',
+        findingName: 'N/A',
+        action: 'Normal',
       };
 
       state.editingRuleId = newRule.id;

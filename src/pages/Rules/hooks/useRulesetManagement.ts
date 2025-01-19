@@ -1,6 +1,5 @@
 import {
   addNewRule,
-  addNewRuleset,
   cancelEdit,
   copyRuleset,
   deleteRule,
@@ -17,8 +16,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '@app/store';
 import { useCallback } from 'react';
+import { useToast } from '@app/hooks/useToast';
 
 export const useRulesetManagement = () => {
+  const { toast } = useToast();
   const dispatch = useDispatch();
   const ruleset = useSelector(getRuleset);
   const selectedRuleset = useSelector(getSelectedRuleset);
@@ -27,7 +28,11 @@ export const useRulesetManagement = () => {
 
   // Handles copying of the current ruleset
   const handleCopyRuleset = useCallback(() => {
-    dispatch(copyRuleset()); // Dispatches the action to copy the ruleset
+    dispatch(copyRuleset());
+    toast({
+      variant: 'success',
+      title: 'A new copy of the selected ruleset has been added',
+    });
   }, [dispatch]);
 
   // Resets the selected ruleset
@@ -41,6 +46,12 @@ export const useRulesetManagement = () => {
   const handleAddNewRule = () => {
     if (selectedRuleset) {
       dispatch(addNewRule());
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.body.scrollHeight + 400,
+          behavior: 'smooth',
+        });
+      }, 100);
     }
   };
 
@@ -64,11 +75,19 @@ export const useRulesetManagement = () => {
   // Saves all changes made to the ruleset
   const handleSaveChanges = () => {
     dispatch(saveChanges());
+    toast({
+      variant: 'success',
+      title: 'Ruleset has been updated',
+    });
   };
 
   // Handles deletion of the current ruleset
   const handleDeleteRuleset = useCallback(() => {
     dispatch(deleteRuleset());
+    toast({
+      variant: 'success',
+      title: 'Ruleset has been deleted',
+    });
   }, [dispatch]);
 
   // Deletes a specific rule based on its ID
@@ -76,11 +95,10 @@ export const useRulesetManagement = () => {
     handleMouseUp(event, () => {
       dispatch(deleteRule(ruleId));
     });
-  };
-
-  // Adds a new ruleset
-  const handleAddNewRuleset = () => {
-    dispatch(addNewRuleset());
+    toast({
+      variant: 'success',
+      title: 'Rule has been deleted',
+    });
   };
 
   // Selects a specific ruleset by ID
@@ -91,10 +109,14 @@ export const useRulesetManagement = () => {
   // Saves changes for a specific row in the ruleset
   const handleSaveRowChanges = () => {
     dispatch(saveRowChanges());
+    toast({
+      variant: 'success',
+      title: 'Rule has been updated',
+    });
   };
 
   // Handles mouse up event and executes a callback if the time difference is small
-  const handleMouseUp = (event: React.MouseEvent<SVGSVGElement>, callback: () => void) => {
+  const handleMouseUp = (_: React.MouseEvent<SVGSVGElement>, callback: () => void) => {
     const startTime = new Date().getTime();
 
     const onMouseUp = () => {
@@ -121,7 +143,6 @@ export const useRulesetManagement = () => {
     handleEditRule,
     handleEditRuleset,
     handleCancel,
-    handleAddNewRuleset,
     handleSelectRuleset,
     handleCopyRuleset,
     handleResetSelectedRuleset,
