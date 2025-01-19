@@ -19,6 +19,7 @@ import {
 } from '@app/components/Table/Table';
 
 import { Button } from '@app/components/Button/Button';
+import ConfirmationDialog from '@app/components/ConfirmationDialog';
 import { Icon } from '@iconify/react';
 import { Input } from '@app/components/Input/Input';
 import SortableItem from './components/SortableItem';
@@ -28,12 +29,12 @@ import { useRulesetManagement } from './hooks/useRulesetManagement';
 
 const Rules = () => {
   const {
-    setRuleset,
-    setSelectedRuleset,
     ruleset,
     selectedRuleset,
     isEditMode,
     editingRuleId,
+    setRuleset,
+    setSelectedRuleset,
     handleSelectRuleset,
     handleCopyRuleset,
     handleResetSelectedRuleset,
@@ -56,7 +57,7 @@ const Rules = () => {
       <div className="flex w-full flex-row flex-wrap items-center justify-between gap-4 py-4 max-sm:flex-col max-sm:px-4">
         {!isEditMode && (
           <div className="flex w-full flex-row flex-wrap items-center justify-between gap-2 md:gap-6">
-            <Select value={`${selectedRuleset?.id}`} onValueChange={value => handleSelectRuleset(Number(value))}>
+            <Select value={`${selectedRuleset?.id}`} onValueChange={value => handleSelectRuleset(value)}>
               <SelectTrigger className="h-8 w-full text-xs md:w-1/3">
                 <SelectValue placeholder="Select Ruleset" />
               </SelectTrigger>
@@ -67,6 +68,9 @@ const Rules = () => {
                       {ruleset.name}
                     </SelectItem>
                   ))}
+                  <SelectItem value="Add New Ruleset" className="text-xs font-bold">
+                    +Add New Ruleset
+                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -89,9 +93,17 @@ const Rules = () => {
             />
             <div className="flex flex-row flex-wrap items-center gap-2 md:gap-6">
               <Button onClick={handleSaveChanges}>Save changes</Button>
-              <Button variant="secondary" onClick={handleCancel}>
-                Cancel
-              </Button>
+
+              <ConfirmationDialog
+                title="Discard Changes?"
+                description="Are you sure you want to discard your changes? Any unsaved changes will be lost"
+                triggerComponent={<Button variant="secondary">Cancel</Button>}
+                confirmationComponent={
+                  <Button type="button" variant="destructive" className="bg-redShades-shade1" onClick={handleCancel}>
+                    Yes
+                  </Button>
+                }
+              />
               <div className="h-full w-[1px]" />
               <Button variant="success" onClick={handleAddNewRule}>
                 Add New Rule
@@ -110,6 +122,7 @@ const Rules = () => {
         )}
         <TableHeader className="uppercase">
           <TableRow>
+            <TableHead className="w-[100px]"></TableHead>
             <TableHead className="w-[100px]">Rule #</TableHead>
             <TableHead colSpan={3} className="text-center">
               Measurement Condition
@@ -126,6 +139,9 @@ const Rules = () => {
               strategy={verticalListSortingStrategy}>
               {selectedRuleset?.rules.map(rule => (
                 <SortableItem id={rule.id} key={rule.id} data={{ row: true }}>
+                  <TableCell className="w-[100px]">
+                    <Icon color="#B4B4C3" icon="ci:drag-vertical" width="24" height="24" cursor="grab" />
+                  </TableCell>
                   <TableCell className="font-medium">{rule.id}</TableCell>
                   <TableCell>
                     {editingRuleId === rule.id ? (

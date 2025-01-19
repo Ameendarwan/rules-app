@@ -10,11 +10,6 @@ export const useRulesetManagement = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingRuleId, setEditingRuleId] = useState<number | null>(null);
 
-  const handleSelectRuleset = (rulesetId: number) => {
-    let result = ruleset.find(item => item.id === rulesetId);
-    if (!!result) setSelectedRuleset(result);
-  };
-
   const handleCopyRuleset = useCallback(() => {
     const findCopies = ruleset.filter(set => set.name.split('_(')?.[0] === selectedRuleset?.name);
 
@@ -149,6 +144,25 @@ export const useRulesetManagement = () => {
     });
   };
 
+  const handleAddNewRuleset = () => {
+    let newRulset = {
+      id: Date.now(),
+      name: 'New Ruleset',
+      rules: [],
+    };
+    console.log('YUP');
+    setRuleset(prevState => [...prevState, newRulset]);
+  };
+
+  const handleSelectRuleset = (rulesetId: number | string) => {
+    console.log('PP', rulesetId);
+    if (`${rulesetId}` === 'Add New Ruleset') handleAddNewRuleset();
+    else {
+      let result = ruleset.find(item => item.id === Number(rulesetId));
+      if (!!result) setSelectedRuleset(result);
+    }
+  };
+
   return {
     ruleset,
     selectedRuleset,
@@ -159,6 +173,7 @@ export const useRulesetManagement = () => {
     handleEditRule,
     handleEditRuleset,
     handleCancel,
+    handleAddNewRuleset,
     setSelectedRuleset,
     setRuleset,
     handleSelectRuleset,
