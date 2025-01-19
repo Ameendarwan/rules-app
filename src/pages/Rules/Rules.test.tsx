@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { Provider } from 'react-redux';
-import Rules from '../Rules';
+import Rules from './Rules';
 import { configureStore } from '@reduxjs/toolkit';
 import { rulesReducer } from '@app/store/slices/rules';
 import { vi } from 'vitest';
