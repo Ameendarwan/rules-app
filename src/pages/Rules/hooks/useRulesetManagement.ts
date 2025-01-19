@@ -31,7 +31,7 @@ export const useRulesetManagement = () => {
   }, [dispatch]);
 
   // Resets the selected ruleset
-  const handleResetSelectedRuleset = (event: React.MouseEvent<SVGSVGElement>) => {
+  const handleResetSelectedRuleset = (event: React.MouseEvent<any>) => {
     handleMouseUp(event, () => {
       dispatch(resetSelectedRuleset());
     });

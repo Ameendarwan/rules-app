@@ -90,7 +90,7 @@ const Rules = () => {
               className="h-8 w-full text-xs md:w-1/3"
             />
             <div className="flex flex-row flex-wrap items-center gap-2 md:gap-6">
-              <Button onClick={handleSaveChanges}>Save changes</Button>
+              <Button onClick={handleSaveChanges}>Save Changes</Button>
 
               <ConfirmationDialog
                 title="Discard Changes?"
@@ -286,6 +286,7 @@ const Rules = () => {
                     )}
                     {editingRuleId === rule.id ? (
                       <Icon
+                        data-testid="reset-icon"
                         color="#B4B4C3"
                         cursor="pointer"
                         className="mt-2"
