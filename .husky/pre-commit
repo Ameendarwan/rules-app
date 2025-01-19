@@ -1,0 +1,45 @@
+
+echo 'Running Husky pre-commit checks.'
+
+# Check Prettier standards
+npx lint-staged ||
+(
+    echo 'Prettier Check Failed. Run npm run format, add changes and try commit again.';
+    false;
+)
+
+# Check ESLint Standards
+npm run lint-fix ||
+(
+    echo 'ESLint fix failed.'
+    false;
+)
+
+# Re-add files that were fixed by ESLint
+git add .
+
+# Check ESLint Standards
+npm run check-lint ||
+(
+    echo 'ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
+    false;
+)
+
+# Run unit test cases
+CI=true npm test ||
+(
+    echo 'Unit Test cases failed'
+    false;
+)
+
+# If everything passes... Now we can commit
+echo 'Attempting to build project, please wait...'
+
+npm run build ||
+(
+    echo 'build failed: View the errors above to see why.'
+    false;
+)
+
+# If everything passes... Now we can commit
+echo '✅✅✅ Code passed pre-commit checks ✅✅✅'
