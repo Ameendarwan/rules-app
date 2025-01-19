@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@app/components/Table/Table';
+import { comparators, ruleActions, units } from './Rules.utils';
 import { handleRuleFieldChange, handleRuleNameChange } from '@app/store/slices/rules';
 
 import { Button } from '@app/components/Button/Button';
@@ -170,7 +171,7 @@ const Rules = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            {['is', '>=', '<'].map(comparator => (
+                            {comparators.map(comparator => (
                               <SelectItem key={comparator} value={comparator} className="text-xs">
                                 {comparator}
                               </SelectItem>
@@ -208,7 +209,7 @@ const Rules = () => {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              {['ms', 'sd', 'lg', 'fm'].map(unit => (
+                              {units.map(unit => (
                                 <SelectItem key={unit} value={unit} className="text-xs">
                                   {unit}
                                 </SelectItem>
@@ -251,7 +252,7 @@ const Rules = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            {['Normal', 'Reflux'].map(action => (
+                            {ruleActions.map(action => (
                               <SelectItem key={action} value={action} className="text-xs">
                                 {action}
                               </SelectItem>
@@ -286,7 +287,6 @@ const Rules = () => {
                     )}
                     {editingRuleId === rule.id ? (
                       <Icon
-                        data-testid="reset-icon"
                         color="#B4B4C3"
                         cursor="pointer"
                         className="mt-2"
