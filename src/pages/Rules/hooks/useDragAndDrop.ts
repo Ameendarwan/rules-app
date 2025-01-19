@@ -4,6 +4,7 @@ import { DragEndEvent } from '@dnd-kit/core';
 import { handleDrag } from '@app/store/slices/rules';
 import { useDispatch } from 'react-redux';
 
+// Custom hook for handling drag and drop functionality
 export const useDragAndDrop = () => {
   const dispatch = useDispatch();
   const sensors = useSensors(useSensor(PointerSensor));

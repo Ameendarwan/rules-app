@@ -10,6 +10,7 @@ This project has been bootstrapped with:
 - Redux Toolkit
 - React Router
 - Tailwind
+- React-DnD-kit
 - Husky
 - Stylelint
 - Babel
